@@ -9,6 +9,19 @@
 DEVSTACK_WORKSPACE ?= $(shell pwd)/..
 
 # Name of Docker Compose project.
+# Volumes and network are namespaced based on this value,
+# so changing it will give you a separate set of databases.
+# See https://docs.docker.com/compose/reference/envvars/#compose_project_name
+# If OPENEDX_RELAESE is defined, defaults to `devstack-${OPENEDX_RELEASE}`;
+# otherwise, it defaults to `devstack`.
+# Be sure to bring down services before changing the value of `COMPOSE_PROJECT_NAME`.
+ifdef OPENEDX_RELEASE
+	COMPOSE_PROJECT_NAME ?= devstack-${OPENEDX_RELEASE}
+else
+	COMPOSE_PROJECT_NAME ?= devstack
+endif
+
+# Name of Docker Compose project.
 # See https://docs.docker.com/compose/reference/envvars/#compose_project_name
 # Defaults to 'devstack'.
 COMPOSE_PROJECT_NAME ?= devstack
@@ -34,7 +47,7 @@ FS_SYNC_STRATEGY ?= local-mounts
 # TODO: Re-evaluate this list and consider paring it down to a tighter core.
 #       The current value was chosen such that it would not change the existing
 #       Devstack behavior.
-DEFAULT_SERVICES ?= lms+studio+ecommerce+discovery+credentials+forum+edx_notes_api+registrar+gradebook+program-console+frontend-app-publisher
+DEFAULT_SERVICES ?= lms+studio+ecommerce+discovery+xqueue+credentials+forum+edx_notes_api+registrar+gradebook+program-console+frontend-app-publisher
 
 # List of all services with database migrations.
 # Services must provide a Makefile target named: $(service)-update-db
