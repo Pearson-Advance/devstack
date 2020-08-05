@@ -24,14 +24,15 @@ repos=(
     "https://github.com/edx/course-discovery.git"
     "https://github.com/edx/credentials.git"
     "https://github.com/edx/cs_comments_service.git"
-    "https://github.com/edx/ecommerce.git"
+    "https://github.com/Pearson-Advance/ecommerce.git"
     "https://github.com/edx/edx-e2e-tests.git"
     "https://github.com/edx/edx-notes-api.git"
-    "https://github.com/edx/edx-platform.git"
+    "https://github.com/Pearson-Advance/edx-platform.git"
     "https://github.com/edx/xqueue.git"
     "https://github.com/edx/edx-analytics-pipeline.git"
     "https://github.com/edx/frontend-app-gradebook.git"
     "https://github.com/edx/frontend-app-publisher.git"
+    "https://github.com/Pearson-Advance/openedx-themes.git"
 )
 
 non_release_repos=(
@@ -44,10 +45,10 @@ ssh_repos=(
     "git@github.com:edx/course-discovery.git"
     "git@github.com:edx/credentials.git"
     "git@github.com:edx/cs_comments_service.git"
-    "git@github.com:edx/ecommerce.git"
+    "git@github.com:Pearson-Advance/ecommerce.git"
     "git@github.com:edx/edx-e2e-tests.git"
     "git@github.com:edx/edx-notes-api.git"
-    "git@github.com:edx/edx-platform.git"
+    "git@github.com:Pearson-Advance/edx-platform.git"
     "git@github.com:edx/xqueue.git"
     "git@github.com:edx/edx-analytics-pipeline.git"
     "git@github.com:edx/frontend-app-gradebook.git"
@@ -58,11 +59,6 @@ non_release_ssh_repos=(
     "git@github.com:edx/frontend-app-learning.git"
     "git@github.com:edx/registrar.git"
     "git@github.com:edx/frontend-app-program-console.git"
-)
-
-private_repos=(
-    # Needed to run whitelabel tests.
-    "https://github.com/edx/edx-themes.git"
 )
 
 if [ -n "${OPENEDX_RELEASE}" ]; then
