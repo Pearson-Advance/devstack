@@ -11,18 +11,18 @@ services:
   discovery:
       volumes:
       - ${DEVSTACK_WORKSPACE}/course-discovery:/edx/app/discovery/discovery:cached
-      - discovery_node_modules:/edx/app/discovery/discovery/node_modules
+      - ../volumes/discovery_node_modules:/edx/app/discovery/discovery/node_modules
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   ecommerce:
     volumes:
       - ${DEVSTACK_WORKSPACE}/ecommerce:/edx/app/ecommerce/ecommerce:cached
-      - ecommerce_node_modules:/edx/app/ecommerce/ecommerce/node_modules
+      - ../volumes/ecommerce_node_modules:/edx/app/ecommerce/ecommerce/node_modules
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   lms:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform:cached
       - edxapp_media:/edx/var/edxapp/media
-      - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
+      - ../volumes/edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
       - edxapp_uploads:/edx/var/edxapp/uploads
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   edx_notes_api:
@@ -33,7 +33,7 @@ services:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform:cached
       - edxapp_media:/edx/var/edxapp/media
-      - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
+      - ../volumes/edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
       - edxapp_uploads:/edx/var/edxapp/uploads
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   forum:
@@ -64,10 +64,7 @@ services:
 
 volumes:
   credentials_node_modules:
-  discovery_node_modules:
-  ecommerce_node_modules:
   edxapp_media:
-  edxapp_node_modules:
   edxapp_uploads:
   gradebook_node_modules:
   program_console_node_modules:
