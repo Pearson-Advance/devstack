@@ -31,8 +31,9 @@ docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp
 docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms --settings=devstack_docker add_organization PX PearsonX'
 docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms --settings=devstack_docker add_organization demo Demo'
 
-docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled example.com --configuration {\"course_org_filter\":[\"demo\"]}'
-docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled px.localhost:18000 --configuration {\"course_org_filter\":[\"PX\"]}'
+docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled example.com --configuration {\"course_org_filter\":[\"demo\"]\,\"COURSE_CATALOG_API_URL\":\"http://edx.devstack.discovery:18381/api/v1/\"}'
+docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled pearson.devstack.lms:18000 --configuration {\"course_org_filter\":[\"PX\"]\,\"COURSE_CATALOG_API_URL\":\"http://pearson.devstack.discovery:18381/api/v1/\"}'
+docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled main.devstack.lms:18000 --configuration {\"course_org_filter\":[\"PX\"\,\"demo\"]\,\"COURSE_CATALOG_API_URL\":\"http://main.devstack.discovery:18381/api/v1/\"}'
 
 # Enable the LMS-E-Commerce integration
 docker-compose $DOCKER_COMPOSE_FILES exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms --settings=devstack_docker configure_commerce'

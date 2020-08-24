@@ -206,6 +206,8 @@ services:
       default:
         aliases:
           - edx.devstack.discovery
+          - pearson.devstack.discovery
+          - main.devstack.discovery
     ports:
       - "18381:18381"
     volumes:
@@ -231,6 +233,8 @@ services:
       default:
         aliases:
           - edx.devstack.ecommerce
+          - pearson.devstack.ecommerce
+          - main.devstack.ecommerce
     ports:
       - "18130:18130"
 
@@ -304,6 +308,8 @@ services:
       default:
         aliases:
           - edx.devstack.lms
+          - pearson.devstack.lms
+          - main.devstack.lms
     ports:
       - "18000:18000"
       - "19876:19876" # JS test debugging
