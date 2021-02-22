@@ -33,6 +33,7 @@ repos=(
     "https://github.com/edx/frontend-app-gradebook.git"
     "https://github.com/edx/frontend-app-publisher.git"
     "https://github.com/Pearson-Advance/openedx-themes.git"
+    "https://github.com/Pearson-Advance/frontend-app-custom-enrollment.git"
 )
 
 non_release_repos=(
@@ -53,6 +54,7 @@ ssh_repos=(
     "git@github.com:edx/edx-analytics-pipeline.git"
     "git@github.com:edx/frontend-app-gradebook.git"
     "git@github.com:edx/frontend-app-publisher.git"
+    "git@github.com:Pearson-Advance/frontend-app-custom-enrollment.git"
 )
 
 non_release_ssh_repos=(

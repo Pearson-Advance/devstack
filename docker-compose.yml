@@ -494,6 +494,21 @@ services:
       - "2000:2000"
     depends_on:
       - lms
+  
+  frontend-app-custom-enrollment:
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-custom-enrollment"
+    extends:
+      file: microfrontend.yml
+      service: microfrontend
+    working_dir: '/edx/app/frontend-app-custom-enrollment'
+    networks:
+      default:
+        aliases:
+          - edx.devstack.frontend-app-custom-enrollment
+    ports:
+      - "18410:18410"
+    depends_on:
+      - lms
 
 volumes:
   devpi_data:

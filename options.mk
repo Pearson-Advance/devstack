@@ -43,7 +43,7 @@ FS_SYNC_STRATEGY ?= local-mounts
 # TODO: Re-evaluate this list and consider paring it down to a tighter core.
 #       The current value was chosen such that it would not change the existing
 #       Devstack behavior.
-DEFAULT_SERVICES ?= lms+studio+ecommerce+discovery+xqueue+credentials+forum+edx_notes_api+registrar+gradebook+program-console+frontend-app-publisher
+DEFAULT_SERVICES ?= lms+studio+ecommerce+discovery+xqueue+credentials+forum+edx_notes_api+registrar+gradebook+program-console+frontend-app-publisher+frontend-app-custom-enrollment
 
 # List of all services with database migrations.
 # Services must provide a Makefile target named: $(service)-update-db
