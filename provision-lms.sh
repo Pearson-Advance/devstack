@@ -28,10 +28,25 @@ docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && echo "f
 # Create an enterprise service user for edxapp and give them appropriate permissions
 ./enterprise/provision.sh
 
+#Create Organizations
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms --settings=devstack_docker add_organization PX PearsonX'
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms --settings=devstack_docker add_organization demo Demo'
+
+#Update Site Configurations
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled example.com --configuration {\"course_org_filter\":[\"demo\"]\,\"COURSE_CATALOG_API_URL\":\"http://edx.devstack.discovery:18381/api/v1/\"}'
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled lms.pearson.localhost:18000 --configuration {\"course_org_filter\":[\"PX\"]\,\"COURSE_CATALOG_API_URL\":\"http://discovery.pearson.localhost:18381/api/v1/\"}'
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms create_or_update_site_configuration  --enabled lms.main.localhost:18000 --configuration {\"course_org_filter\":[\"PX\"\,\"demo\"]\,\"COURSE_CATALOG_API_URL\":\"http://discovery.main.localhost:18381/api/v1/\"}'
+
 # Enable the LMS-E-Commerce integration
 docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py lms --settings=devstack_docker configure_commerce'
 
 # Create demo course and users
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py cms --settings=devstack_docker create_course split edx@example.com PX demo1 2020  "PX Course 1"'
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py cms --settings=devstack_docker create_course split edx@example.com PX demo2 2020  "PX Course 2"'
+
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py cms --settings=devstack_docker create_course split edx@example.com demo demo1 2020  "Demo Course 1"'
+docker-compose exec -T lms bash -c 'source /edx/app/edxapp/edxapp_env && python /edx/app/edxapp/edx-platform/manage.py cms --settings=devstack_docker create_course split edx@example.com demo demo2 2020  "Demo Course 2"'
+
 docker-compose exec -T lms bash -c '/edx/app/edx_ansible/venvs/edx_ansible/bin/ansible-playbook /edx/app/edx_ansible/edx_ansible/playbooks/demo.yml -v -c local -i "127.0.0.1," --extra-vars="COMMON_EDXAPP_SETTINGS=devstack_docker"'
 
 # Fix missing vendor file by clearing the cache
