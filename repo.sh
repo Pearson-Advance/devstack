@@ -36,6 +36,8 @@ declare -A repos=(
     ["https://github.com/edx/frontend-app-learning.git"]="master"
     ["https://github.com/edx/registrar.git"]="master"
     ["https://github.com/edx/frontend-app-program-console.git"]="master"
+    ["https://github.com/Pearson-Advance/openedx-themes.git"]="open-release/juniper.master"
+    ["https://github.com/Pearson-Advance/frontend-app-custom-enrollment.git"]="master"
 )
 
 declare -A ssh_repos=(
@@ -53,6 +55,8 @@ declare -A ssh_repos=(
     ["git@github.com:edx/frontend-app-learning.git"]="master"
     ["git@github.com:edx/registrar.git"]="master"
     ["git@github.com:edx/frontend-app-program-console.git"]="master"
+    ["git@github.com:Pearson-Advance/openedx-themes.git"]="open-release/juniper.master"
+    ["git@github.com:Pearson-Advance/frontend-app-custom-enrollment.git"]="master"
 )
 
 declare -A private_repos=(
