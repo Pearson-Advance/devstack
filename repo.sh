@@ -20,66 +20,53 @@ fi
 # When you add new services should add them to both repos and ssh_repos
 # (or non_release_repos and non_release_ssh_repos if they are not part
 # of Open edX releases).
-repos=(
-    "https://github.com/edx/course-discovery.git"
-    "https://github.com/edx/credentials.git"
-    "https://github.com/edx/cs_comments_service.git"
-    "https://github.com/edx/ecommerce.git"
-    "https://github.com/edx/edx-e2e-tests.git"
-    "https://github.com/edx/edx-notes-api.git"
-    "https://github.com/edx/edx-platform.git"
-    "https://github.com/edx/xqueue.git"
-    "https://github.com/edx/edx-analytics-pipeline.git"
-    "https://github.com/edx/frontend-app-gradebook.git"
-    "https://github.com/edx/frontend-app-publisher.git"
+
+declare -A repos=(
+    ["https://github.com/edx/course-discovery.git"]="open-release/juniper.master"
+    ["https://github.com/edx/credentials.git"]="open-release/juniper.master"
+    ["https://github.com/edx/cs_comments_service.git"]="open-release/juniper.master"
+    ["https://github.com/pearson-Advance/ecommerce.git"]="pearson-release/juniper.master"
+    ["https://github.com/edx/edx-e2e-tests.git"]="open-release/juniper.master"
+    ["https://github.com/edx/edx-notes-api.git"]="open-release/juniper.master"
+    ["https://github.com/pearson-Advance/edx-platform.git"]="pearson-release/juniper.master"
+    ["https://github.com/edx/xqueue.git"]="open-release/juniper.master"
+    ["https://github.com/edx/edx-analytics-pipeline.git"]="open-release/juniper.master"
+    ["https://github.com/edx/frontend-app-gradebook.git"]="open-release/juniper.master"
+    ["https://github.com/edx/frontend-app-publisher.git"]="open-release/juniper.master"
+    ["https://github.com/edx/frontend-app-learning.git"]="master"
+    ["https://github.com/edx/registrar.git"]="master"
+    ["https://github.com/edx/frontend-app-program-console.git"]="master"
 )
 
-non_release_repos=(
-    "https://github.com/edx/frontend-app-learning.git"
-    "https://github.com/edx/registrar.git"
-    "https://github.com/edx/frontend-app-program-console.git"
+declare -A ssh_repos=(
+    ["git@github.com:edx/course-discovery.git"]="open-release/juniper.master"
+    ["git@github.com:edx/credentials.git"]="open-release/juniper.master"
+    ["git@github.com:edx/cs_comments_service.git"]="open-release/juniper.master"
+    ["git@github.com:pearson-Advance/ecommerce.git"]="pearson-release/juniper.master"
+    ["git@github.com:edx/edx-e2e-tests.git"]="open-release/juniper.master"
+    ["git@github.com:edx/edx-notes-api.git"]="open-release/juniper.master"
+    ["git@github.com:pearson-Advance/edx-platform.git"]="pearson-release/juniper.master"
+    ["git@github.com:edx/xqueue.git"]="open-release/juniper.master"
+    ["git@github.com:edx/edx-analytics-pipeline.git"]="open-release/juniper.master"
+    ["git@github.com:edx/frontend-app-gradebook.git"]="open-release/juniper.master"
+    ["git@github.com:edx/frontend-app-publisher.git"]="open-release/juniper.master"
+    ["git@github.com:edx/frontend-app-learning.git"]="master"
+    ["git@github.com:edx/registrar.git"]="master"
+    ["git@github.com:edx/frontend-app-program-console.git"]="master"
 )
 
-ssh_repos=(
-    "git@github.com:edx/course-discovery.git"
-    "git@github.com:edx/credentials.git"
-    "git@github.com:edx/cs_comments_service.git"
-    "git@github.com:edx/ecommerce.git"
-    "git@github.com:edx/edx-e2e-tests.git"
-    "git@github.com:edx/edx-notes-api.git"
-    "git@github.com:edx/edx-platform.git"
-    "git@github.com:edx/xqueue.git"
-    "git@github.com:edx/edx-analytics-pipeline.git"
-    "git@github.com:edx/frontend-app-gradebook.git"
-    "git@github.com:edx/frontend-app-publisher.git"
-)
-
-non_release_ssh_repos=(
-    "git@github.com:edx/frontend-app-learning.git"
-    "git@github.com:edx/registrar.git"
-    "git@github.com:edx/frontend-app-program-console.git"
-)
-
-private_repos=(
+declare -A private_repos=(
     # Needed to run whitelabel tests.
-    "https://github.com/edx/edx-themes.git"
+    ["https://github.com/edx/edx-themes.git"]="master"
 )
-
-if [ -n "${OPENEDX_RELEASE}" ]; then
-    OPENEDX_GIT_BRANCH=open-release/${OPENEDX_RELEASE}
-else
-    OPENEDX_GIT_BRANCH=master
-    repos+=("${non_release_repos[@]}")
-    ssh_repos+=("${non_release_ssh_repos[@]}")
-fi
 
 name_pattern=".*/(.*).git"
 
 _checkout ()
 {
-    repos_to_checkout=("$@")
+    eval "declare -A repositories="${1#*=}
 
-    for repo in "${repos_to_checkout[@]}"
+    for repo in "${!repositories[@]}"
     do
         # Use Bash's regex match operator to capture the name of the repo.
         # Results of the match are saved to an array called $BASH_REMATCH.
@@ -88,9 +75,9 @@ _checkout ()
 
         # If a directory exists and it is nonempty, assume the repo has been cloned.
         if [ -d "$name" ] && [ -n "$(ls -A "$name" 2>/dev/null)" ]; then
-            echo "Checking out branch ${OPENEDX_GIT_BRANCH} of $name"
+            echo "Checking out branch ${repositories[$repo]} of $name"
             cd "$name"
-            _checkout_and_update_branch
+            _checkout_and_update_branch ${repositories[$repo]}
             cd ..
         fi
     done
@@ -98,14 +85,14 @@ _checkout ()
 
 checkout ()
 {
-    _checkout "${repos[@]}"
+    _checkout "$(declare -p repos)"
 }
 
 _clone ()
 {
+    eval "declare -A repositories="${1#*=}
 
-    repos_to_clone=("$@")
-    for repo in "${repos_to_clone[@]}"
+    for repo in "${!repositories[@]}"
     do
         # Use Bash's regex match operator to capture the name of the repo.
         # Results of the match are saved to an array called $BASH_REMATCH.
@@ -121,13 +108,13 @@ _clone ()
             fi
             printf "The [%s] repo is already checked out. Checking for updates.\n" "$name"
             cd "${DEVSTACK_WORKSPACE}/${name}"
-            _checkout_and_update_branch
+            _checkout_and_update_branch "${repositories[$repo]}"
             cd ..
         else
             if [ "${SHALLOW_CLONE}" == "1" ]; then
-                git clone --single-branch -b ${OPENEDX_GIT_BRANCH} -c core.symlinks=true --depth=1 "${repo}"
+                git clone --single-branch -b ${repositories[$repo]} -c core.symlinks=true --depth=1 "${repo}"
             else
-                git clone --single-branch -b ${OPENEDX_GIT_BRANCH} -c core.symlinks=true "${repo}"
+                git clone --single-branch -b ${repositories[$repo]} -c core.symlinks=true "${repo}"
             fi
         fi
     done
@@ -138,34 +125,36 @@ _checkout_and_update_branch ()
 {
     GIT_SYMBOLIC_REF="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH_NAME=${GIT_SYMBOLIC_REF##refs/heads/}
-    if [ "${BRANCH_NAME}" == "${OPENEDX_GIT_BRANCH}" ]; then
-        git pull origin ${OPENEDX_GIT_BRANCH}
+    DESIRED_BRANCH=$1
+
+    if [ "${BRANCH_NAME}" == "${DESIRED_BRANCH}" ]; then
+        git pull origin ${DESIRED_BRANCH}
     else
-        git fetch origin ${OPENEDX_GIT_BRANCH}:${OPENEDX_GIT_BRANCH}
-        git checkout ${OPENEDX_GIT_BRANCH}
+        git fetch origin ${DESIRED_BRANCH}:${DESIRED_BRANCH}
+        git checkout ${DESIRED_BRANCH}
     fi
     find . -name '*.pyc' -not -path './.git/*' -delete
 }
 
 clone ()
 {
-    _clone "${repos[@]}"
+    _clone "$(declare -p repos)"
 }
 
 clone_ssh ()
 {
-    _clone "${ssh_repos[@]}"
+    _clone "$(declare -p ssh_repos)"
 }
 
 clone_private ()
 {
-    _clone "${private_repos[@]}"
+    _clone "$(declare -p private_repos)"
 }
 
 reset ()
 {
     currDir=$(pwd)
-    for repo in ${repos[*]}
+    for repo in ${!repos[*]}
     do
         [[ $repo =~ $name_pattern ]]
         name="${BASH_REMATCH[1]}"
@@ -182,7 +171,7 @@ reset ()
 status ()
 {
     currDir=$(pwd)
-    for repo in ${repos[*]}
+    for repo in ${!repos[*]}
     do
         [[ $repo =~ $name_pattern ]]
         name="${BASH_REMATCH[1]}"

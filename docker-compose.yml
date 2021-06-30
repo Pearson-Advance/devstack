@@ -19,7 +19,7 @@ services:
   chrome:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.chrome"
     hostname: chrome.devstack.edx
-    image: edxops/chrome:${OPENEDX_RELEASE:-latest}
+    image: edxops/chrome:juniper.master
     shm_size: 2g
     networks:
       default:
@@ -73,7 +73,7 @@ services:
   firefox:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.firefox"
     hostname: firefox.devstack.edx
-    image: edxops/firefox:${OPENEDX_RELEASE:-latest}
+    image: edxops/firefox:juniper.master
     shm_size: 2g
     networks:
       default:
@@ -178,7 +178,7 @@ services:
       SOCIAL_AUTH_EDX_OIDC_URL_ROOT: http://edx.devstack.lms:18000/oauth2
       ENABLE_DJANGO_TOOLBAR: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/credentials:${OPENEDX_RELEASE:-latest}
+    image: edxops/credentials:juniper.master
     networks:
       default:
         aliases:
@@ -201,7 +201,7 @@ services:
       TEST_ELASTICSEARCH_URL: "http://edx.devstack.elasticsearch:9200"
       ENABLE_DJANGO_TOOLBAR: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/discovery:${OPENEDX_RELEASE:-latest}
+    image: edxops/discovery:juniper.master
     networks:
       default:
         aliases:
@@ -226,7 +226,7 @@ services:
     environment:
       DJANGO_WATCHMAN_TIMEOUT: 30
       ENABLE_DJANGO_TOOLBAR: 1
-    image: edxops/ecommerce:${OPENEDX_RELEASE:-latest}
+    image: edxops/ecommerce:juniper.master
     networks:
       default:
         aliases:
@@ -242,7 +242,7 @@ services:
       - devpi
       - elasticsearch
       - mysql
-    image: edxops/notes:${OPENEDX_RELEASE:-latest}
+    image: edxops/notes:juniper.master
     networks:
       default:
         aliases:
@@ -268,7 +268,7 @@ services:
       - mongo
       - memcached
       - elasticsearch
-    image: edxops/forum:${OPENEDX_RELEASE:-latest}
+    image: edxops/forum:juniper.master
     networks:
       default:
         aliases:
@@ -299,7 +299,7 @@ services:
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/edxapp:${OPENEDX_RELEASE:-latest}
+    image: paops/edxapp:juniper
     networks:
       default:
         aliases:
@@ -407,7 +407,7 @@ services:
       EDXAPP_TEST_MONGO_HOST: edx.devstack.mongo
       NO_PYTHON_UNINSTALL: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/edxapp:${OPENEDX_RELEASE:-latest}
+    image: paops/edxapp:juniper
     networks:
       default:
         aliases:
