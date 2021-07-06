@@ -57,8 +57,8 @@ services:
     #   - "9200:9200"
     #   - "9300:9300"
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-      - elasticsearch_data:/usr/share/elasticsearch/logs
+      - ../volumes/elasticsearch_data:/usr/share/elasticsearch/data
+      - ../volumes/elasticsearch_data:/usr/share/elasticsearch/logs
 
   # This is meant to be used to test ES upgrades so that we do not have to upgrade all of our services to ES5 at once.
   elasticsearch-5:
@@ -111,7 +111,7 @@ services:
     # ports:
     #  - "27017:27017"
     volumes:
-      - mongo_data:/data/db
+      - ../volumes/mongo_data:/data/db
 
   mysql:
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
@@ -128,7 +128,7 @@ services:
     # ports:
     #   - "3506:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ../volumes/mysql_data:/var/lib/mysql
 
   mysql57:
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
@@ -145,7 +145,7 @@ services:
     # ports:
     #   - "3506:3306"
     volumes:
-      - mysql57_data:/var/lib/mysql
+      - ../volumes/mysql57_data:/var/lib/mysql
 
   redis:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.redis"
@@ -211,7 +211,7 @@ services:
     ports:
       - "18381:18381"
     volumes:
-      - discovery_assets:/edx/var/discovery/
+      - ../volumes/discovery_assets:/edx/var/discovery/
 
   ecommerce:
     command: bash -c 'source /edx/app/ecommerce/ecommerce_env && while true; do python /edx/app/ecommerce/ecommerce/manage.py runserver 0.0.0.0:18130; sleep 2; done'
@@ -316,7 +316,7 @@ services:
       # - "18003:18003"
       # - "18031:18031"
     volumes:
-      - edxapp_lms_assets:/edx/var/edxapp/staticfiles/
+      - ../volumes/edxapp_lms_assets:/edx/var/edxapp/staticfiles/
 
   registrar:
     command: bash -c 'source /edx/app/registrar/registrar_env && while true; do python /edx/app/registrar/registrar/manage.py runserver 0.0.0.0:18734; sleep 2; done'
@@ -424,7 +424,7 @@ services:
       # - "18103:18103"
       # - "18131:18131"
     volumes:
-      - edxapp_studio_assets:/edx/var/edxapp/staticfiles/
+      - ../volumes/edxapp_studio_assets:/edx/var/edxapp/staticfiles/
 
   # ==========================================================================
   # edX Microfrontends
@@ -496,11 +496,4 @@ services:
       - registrar
 
 volumes:
-  discovery_assets:
-  edxapp_lms_assets:
-  edxapp_studio_assets:
-  elasticsearch_data:
-  mongo_data:
-  mysql_data:
-  mysql57_data:
   devpi_data:
